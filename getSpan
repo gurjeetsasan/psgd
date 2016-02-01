@@ -1,0 +1,65 @@
+#!/usr/bin/python
+
+from lxml import html
+import requests
+import csv
+from requests.utils import quote
+
+print "starting..."
+
+products = ["iKall K-66 (Black & Blue)",
+"IKall K-11 Dual SIM Mobile (Black & Blue) (Black, Blue)",
+"i KALL K-55 (White & Red)",
+"iKall K-66 (Black & Red)",
+"iKall K-66 (White)",
+"i KALL K55 1.8 inch Dual Sim Mobile with bluetooth (Bla...",
+"IKall K-11 Dual SIM Mobile (Red & Black) (Red, Black)",
+"i KALL 1.8 inch Dual Sim Mobile(K-66) with bluetooth-bl...",
+"i KALL K55 1.8 inch Dual Sim Mobile with bluetooth (Whi...",
+"i KALL Dual Sim 1.8 Inch Feature phone with bluetooth-r...",
+"i KALL Dual Sim 1.8 Inch Feature phone with bluetooth-b...",
+"i KALL 1.8 inch Dual Sim Mobile With bluetooth(K-66)-Re...",
+"i KALL K-55 (Black & Blue)",
+"i KALL K66 (Black & White)",
+"Dynacon I KALL K11 Black-Red Make in India with FM Radi...",
+"Maxfone 512 (Blue & Black)",
+"Maxfone 511 (Black & Red)",
+"Maxfone 511 (Black & Blue)",
+"Maxfone 510 (Black)",
+"Voicair SRG 7 (Black)",
+"Voicair SRG 7 (Black)",
+"VoicAir VoicAir SRG007 (Black)",
+"Champion X2 Sleek Plus (Orange)",
+"Champion X2 Sleek Plus (Desert Blue)",
+"Champion X2 Sleek Plus (Red)",
+"Dynacon I KALL K11 Black-Blue Make in India with FM Rad...",
+"Dynacon I KALL K11 RED Made in India with Bluetooth & F...",
+"Champion X2 Sleek Plus (Green)",
+"A&K A 5RB (Black:Red)",
+"A&K Bar Phone A 4 (Black)",
+"Maxfone 512 (Black & White)",
+"Infix Infix N5- Black (Black)",
+"Infix 101 (Black, White)",
+"Nuvo One-Echo (Without Accessories) (Black)",
+"Maxfone 506 (Black)",
+"Infix Vartue C2 01 Dual Sim Multimedia (Black)",
+"Infix Vartue Dual Sim Multimedia (Black)",
+"Infix EB010 (White)",
+"Infix EB010 (Blue)",
+"Infix Nexam N1 Dual Sim Multimedia With Auto Call Recor..."]
+
+
+
+for product in products:
+	print product
+	params  = quote( product )
+	baseUrl = "http://www.snapdeal.com/search?keyword="
+	newUrl  = baseUrl+params
+
+	newUrl  = baseUrl+params
+	page = requests.get(newUrl)
+	tree = html.fromstring(page.content)
+
+	uNames      = tree.xpath('/html/body/div[7]/div[3]/div[1]/div[3]/div[3]/div[5]/section/div/div[3]/div[1]/a/@href')
+	print uNames
+

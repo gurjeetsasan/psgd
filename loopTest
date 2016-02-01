@@ -1,0 +1,50 @@
+#!/usr/bin/python
+
+from lxml import html
+import requests
+import csv
+
+
+min = 0
+max = 1520
+item = 1;
+baseUrl = "http://www.flipkart.com/lc/pr/pv1/spotList1/spot1/productList?p%5B%5D=sort%3Dprice_asc&sid=tyy%2C4io&start="
+
+mNames = []
+mLink = []
+mPrice = []
+
+print "Connecting to Server"
+
+for index in range(min, max, 20):
+	print "processing request: ",item
+	item = item + 1;
+
+	newUrl = baseUrl + str(index)	
+	page = requests.get(newUrl)
+	tree = html.fromstring(page.content)
+	
+	#get the universties name and Address from tress
+	uNames 	 = tree.xpath('//a[@class="fk-display-block"]/text()')
+	uLink 	 = tree.xpath('//a[@class="fk-display-block"]/@href')
+	uPrice 	 = tree.xpath('//div[@class="pu-final"]/span/text()')
+
+	mNames.extend(uNames)
+	mLink.extend(uLink)
+	mPrice.extend(uPrice)
+
+
+
+print "Writing data to File"
+#create a file handler
+c = csv.writer(open("data/FullMobileList.csv", "wb"))
+c.writerow(["Name","price","link"])
+
+#Loop through all the content.
+for index in range(len(mNames)):
+	# print 'University Name: ', uNames[index], ' == Address: ',uAddress[index] 	
+	c.writerow([mNames[index],mPrice[index],mLink[index]])
+
+
+
+print "List Created Successfully"

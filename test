@@ -1,0 +1,38 @@
+#!/usr/bin/python
+
+from lxml import html
+import requests
+import csv
+
+
+min = 1
+max = 1500
+print ('Connecting to server...')
+
+#get the page content
+page = requests.get("http://www.flipkart.com/lc/pr/pv1/spotList1/spot1/productList?p%5B%5D=sort%3Dprice_asc&sid=tyy%2C4io&start=1")
+tree = html.fromstring(page.content)
+#get the universties name and Address from tress
+uNames 	 = tree.xpath('//a[@class="fk-display-block"]/text()')
+uLink 	 = tree.xpath('//a[@class="fk-display-block"]/@href')
+uPrice 	 = tree.xpath('//div[@class="pu-final"]/span/text()')
+
+
+# uAddress = tree.xpath('//td[@class="i"]/h5/text()')
+print ('processing data...')
+
+#print uNames
+#print uPrice
+# print uLink
+
+#create a file handler
+c = csv.writer(open("listOfmobilesFlip.csv", "wb"))
+c.writerow(["Name","price","link"])
+
+#Loop through all the content.
+for index in range(len(uNames)):
+	# print 'University Name: ', uNames[index], ' == Address: ',uAddress[index] 	
+	c.writerow([uNames[index],uPrice[index],uLink[index]])
+
+
+print ('List Created Successfully!')
