@@ -1,0 +1,52 @@
+#!/usr/bin/python
+
+from lxml import html
+import requests
+import csv
+import requests
+
+min = 1
+max = 1500
+print ('Connecting to server...')
+
+motoMobiles = [	'http://www.motorola.in/products/moto-x-force',
+				'http://www.motorola.in/products/moto-g-turbo-edition',
+				'http://www.motorola.in/products/moto-x-style',
+				'http://www.motorola.in/products/moto-x-play',
+				'http://www.motorola.in/products/moto-g',
+				'http://www.motorola.in/Moto-X/Moto-x-gen2-india.html',
+				'http://www.motorola.in/products/moto-360',
+				'http://www.motorola.in/Moto-360/moto-360-in.html',
+				'http://www.motorola.in/consumers/View-all-Mobile-Phones/Nexus-6-by-Motorola/nexus-6-in.html']
+
+for mobile in motoMobiles:
+	
+	#get the page content
+	page = requests.get(mobile)
+
+	tree = html.fromstring(page.content)
+	#get the universties name and Address from tress
+	# uNames  = tree.xpath('//a[@class="fk-display-block"]/text()')
+	ulinks  = tree.xpath('/html/body/div[2]/div[1]/div/section/div/section[2]/section/div[1]/div[2]/div[2]/div/div/div/div/div/div[1]/h1/div/div/div/div/img/@src')
+	uNames  = tree.xpath('/html/body/div[2]/div[1]/div/section/h1/text()')
+
+	if len(uNames) != 0:
+		print uNames[0]
+		print ulinks[0]
+
+
+
+	if len(ulinks) == 120:
+		url  = ulinks[0]
+		name = uNames[0]
+		name = name+".svg"
+		
+		response = requests.get(ulinks)
+		if response.status_code == 200:
+			f = open(name, 'wb')
+			f.write(response.content)
+			f.close()
+			print "Downloaded: ",name
+
+
+print ('List Created Successfully!')
